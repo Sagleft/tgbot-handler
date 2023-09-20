@@ -1,6 +1,7 @@
 package tgbothandler
 
 import (
+	"errors"
 	"fmt"
 
 	tb "gopkg.in/telebot.v3"
@@ -26,6 +27,10 @@ type Callback struct {
 }
 
 func New(botToken string) (Handler, error) {
+	if botToken == "" {
+		return nil, errors.New("telegram bot token is not set")
+	}
+
 	b, err := tb.NewBot(tb.Settings{
 		Token:  botToken,
 		Poller: getTgPoller(),
