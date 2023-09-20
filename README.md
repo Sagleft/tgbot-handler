@@ -19,14 +19,17 @@ import (
 
 func main() {
     botToken := "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"
-    h := tgbothandler.New(botToken)
+    h, err := tgbothandler.New(botToken)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
     callbacks := []tgbothandler.Callback{
         {
             Endpoint: "/start",
             CallbackFunc: func(c tb.Context) error {
                 return c.Reply("Hello!")
-            }
+            },
         },
         {
             Endpoint: tb.OnText,
@@ -36,10 +39,10 @@ func main() {
                     c.Sender().Username,
                     c.Text(),
                 ))
-            }
+            },
         },
     }
 
-    h.SetupCallbacks().Start()
+    h.SetupCallbacks(callbacks).Start()
 }
 ```
