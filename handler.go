@@ -7,7 +7,7 @@ import (
 )
 
 type Handler interface {
-	SetupCallbacks([]Callback)
+	SetupCallbacks([]Callback) Handler
 
 	// NOTE: it's blocking method
 	Start()
@@ -36,10 +36,11 @@ func New(botToken string) (Handler, error) {
 	}, nil
 }
 
-func (h *defaultHandler) SetupCallbacks(cbs []Callback) {
+func (h *defaultHandler) SetupCallbacks(cbs []Callback) Handler {
 	for _, cb := range cbs {
 		h.Bot.Handle(cb.Endpoint, cb.CallbackFunc)
 	}
+	return h
 }
 
 func (h *defaultHandler) Start() {
