@@ -8,6 +8,9 @@ import (
 
 type Handler interface {
 	SetupCallbacks([]Callback)
+
+	// NOTE: it's blocking method
+	Start()
 }
 
 type defaultHandler struct {
@@ -37,4 +40,8 @@ func (h *defaultHandler) SetupCallbacks(cbs []Callback) {
 	for _, cb := range cbs {
 		h.Bot.Handle(cb.Endpoint, cb.CallbackFunc)
 	}
+}
+
+func (h *defaultHandler) Start() {
+	h.Bot.Start()
 }
