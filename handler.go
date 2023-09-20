@@ -11,6 +11,9 @@ type Handler interface {
 
 	// NOTE: it's blocking method
 	Start()
+
+	GetBot() *tb.Bot
+	SendChatMessage(chatID int64, message interface{}) error
 }
 
 type defaultHandler struct {
@@ -45,4 +48,15 @@ func (h *defaultHandler) SetupCallbacks(cbs []Callback) Handler {
 
 func (h *defaultHandler) Start() {
 	h.Bot.Start()
+}
+
+func (h *defaultHandler) GetBot() *tb.Bot {
+	return h.Bot
+}
+
+func (h *defaultHandler) SendChatMessage(chatID int64, message interface{}) error {
+	if _, err := h.Bot.Send(tb.ChatID(chatID), message, tb.ModeMarkdown); err != nil {
+		return fmt.Errorf("send message: %w", err)
+	}
+	return nil
 }
