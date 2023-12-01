@@ -15,6 +15,7 @@ type Handler interface {
 
 	GetBot() *tb.Bot
 	SendChatMessage(chatID int64, message interface{}) error
+	SendAlbum(chatID int64, album tb.Album, opts ...interface{}) error
 }
 
 type defaultHandler struct {
@@ -62,6 +63,17 @@ func (h *defaultHandler) GetBot() *tb.Bot {
 func (h *defaultHandler) SendChatMessage(chatID int64, message interface{}) error {
 	if _, err := h.Bot.Send(tb.ChatID(chatID), message, tb.ModeMarkdown); err != nil {
 		return fmt.Errorf("send message: %w", err)
+	}
+	return nil
+}
+
+func (h *defaultHandler) SendAlbum(
+	chatID int64,
+	album tb.Album,
+	opts ...interface{},
+) error {
+	if _, err := h.Bot.SendAlbum(tb.ChatID(chatID), album, opts...); err != nil {
+		return fmt.Errorf("send album: %w", err)
 	}
 	return nil
 }
