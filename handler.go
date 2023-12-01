@@ -61,7 +61,7 @@ func (h *defaultHandler) GetBot() *tb.Bot {
 }
 
 func (h *defaultHandler) SendChatMessage(chatID int64, message interface{}) error {
-	if _, err := h.Bot.Send(tb.ChatID(chatID), message, tb.ModeMarkdownV2); err != nil {
+	if _, err := h.Bot.Send(tb.ChatID(chatID), message, tb.ModeMarkdown); err != nil {
 		return fmt.Errorf("send message: %w", err)
 	}
 	return nil
